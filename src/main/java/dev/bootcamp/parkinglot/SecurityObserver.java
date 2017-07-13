@@ -4,11 +4,11 @@ public class SecurityObserver extends ParkingLotObserver{
 
     private boolean parkinglotStatus;
 
-    public boolean isParkinglotFull() {
+    public boolean isParkinglotFull(ParkingLot parkingLot) {
         return parkinglotStatus;
     }
 
-    public void update(boolean status) {
+    public void update(ParkingLot parkingLot, boolean status) {
         parkinglotStatus = status;
     }
 }

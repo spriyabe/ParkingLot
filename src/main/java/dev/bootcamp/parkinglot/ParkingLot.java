@@ -7,15 +7,17 @@ import java.util.Set;
 
 public class ParkingLot {
 
+    private final int id;
     private final int numberOfSlots;
     private final Set<Car> parkedCars;
     private final List<ParkingLotObserver> observers;
 
 
-    public ParkingLot(int numberOfSlots) {
+    public ParkingLot(int id, int numberOfSlots) {
         this.numberOfSlots = numberOfSlots;
         parkedCars = new HashSet<Car>();
         observers = new ArrayList<ParkingLotObserver>();
+        this.id = id;
     }
 
     public void subscribe(ParkingLotObserver observer) {
@@ -34,7 +36,7 @@ public class ParkingLot {
 
     private void notifyAllObservers(boolean status) {
         for(ParkingLotObserver observer: observers) {
-            observer.update(status);
+            observer.update(this,status);
         }
     }
 

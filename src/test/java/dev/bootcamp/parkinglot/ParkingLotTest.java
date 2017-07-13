@@ -15,7 +15,7 @@ public class ParkingLotTest {
 
     @Before
     public void setup(){
-        parkingLot = new ParkingLot(2);
+        parkingLot = new ParkingLot(22, 2);
         ParkingLotObserver owner = new OwnerObserver();
         ParkingLotObserver security = new SecurityObserver();
         parkingLot.subscribe(owner);
@@ -75,7 +75,7 @@ public class ParkingLotTest {
 
         List<ParkingLotObserver> observers = parkingLot.getObservers();
         for (ParkingLotObserver observer : observers) {
-            assertTrue(observer.isParkinglotFull());
+            assertTrue(observer.isParkinglotFull(parkingLot));
         }
     }
 
@@ -88,7 +88,7 @@ public class ParkingLotTest {
 
         List<ParkingLotObserver> observers = parkingLot.getObservers();
         for (ParkingLotObserver observer : observers) {
-            assertFalse(observer.isParkinglotFull());
+            assertFalse(observer.isParkinglotFull(parkingLot));
         }
     }
 

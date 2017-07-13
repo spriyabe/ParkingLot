@@ -3,6 +3,8 @@ package dev.bootcamp.parkinglot;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
@@ -13,9 +15,11 @@ public class ParkingLotTest {
 
     @Before
     public void setup(){
-        ParkingLotOwner owner = new ParkingLotOwner();
         parkingLot = new ParkingLot(2);
+        ParkingLotObserver owner = new OwnerObserver();
+        ParkingLotObserver security = new SecurityObserver();
         parkingLot.subscribe(owner);
+        parkingLot.subscribe(security);
     }
 
     @Test
@@ -65,21 +69,29 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void testNotifyOwner_whenParkingLotIsFull() {
+    public void testNotifyObservers_whenParkingLotIsFull() {
         parkingLot.park(new Car("KA 01 AA 1234"));
         parkingLot.park(new Car("TN 01 AA 1234"));
 
-        assertTrue(parkingLot.getOwner().isMyParkinglotFull());
-
+        List<ParkingLotObserver> observers = parkingLot.getObservers();
+        for (ParkingLotObserver observer : observers) {
+            assertTrue(observer.isParkinglotFull());
+        }
     }
 
     @Test
-    public void testNotifyOwner_WhenParkingLotIsAvailableAgain () {
+    public void testNotifyObservers_whenParkingLotIsAvailableAgain () {
         Car car1 = new Car("KA 01 AA 1234");
         parkingLot.park(car1);
         parkingLot.park(new Car("TN 01 AA 1234"));
         parkingLot.unpark(car1);
 
-        assertFalse(parkingLot.getOwner().isMyParkinglotFull());
+        List<ParkingLotObserver> observers = parkingLot.getObservers();
+        for (ParkingLotObserver observer : observers) {
+            assertFalse(observer.isParkinglotFull());
+        }
     }
+
+
+
 }

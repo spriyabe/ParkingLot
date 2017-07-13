@@ -1,22 +1,25 @@
 package dev.bootcamp.parkinglot;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ParkingLot {
 
     private final int numberOfSlots;
     private final Set<Car> parkedCars;
-    private ParkingLotOwner owner;
+    private final List<ParkingLotObserver> observers;
 
 
     public ParkingLot(int numberOfSlots) {
         this.numberOfSlots = numberOfSlots;
         parkedCars = new HashSet<Car>();
+        observers = new ArrayList<ParkingLotObserver>();
     }
 
-    public void subscribe(ParkingLotOwner owner) {
-        this.owner = owner;
+    public void subscribe(ParkingLotObserver observer) {
+        this.observers.add(observer);
     }
 
     public boolean park(Car car) {
@@ -24,14 +27,21 @@ public class ParkingLot {
             return false;
         }
         if (parkedCars.size() == numberOfSlots - 1) {
-            owner.update(true);
+            notifyAllObservers(true);
         }
         return parkedCars.add(car);
     }
 
+    private void notifyAllObservers(boolean status) {
+        for(ParkingLotObserver observer: observers) {
+            observer.update(status);
+        }
+    }
+
+
     public boolean unpark(Car car) {
-        if (owner.isMyParkinglotFull())
-            owner.update(false);
+        if (isParkingFull())
+            notifyAllObservers(false);
         return parkedCars.remove(car);
     }
 
@@ -39,7 +49,7 @@ public class ParkingLot {
         return numberOfSlots == parkedCars.size();
     }
 
-    public ParkingLotOwner getOwner() {
-        return owner;
+    public List<ParkingLotObserver> getObservers() {
+        return observers;
     }
 }

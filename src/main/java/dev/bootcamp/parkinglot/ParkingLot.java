@@ -6,6 +6,11 @@ package dev.bootcamp.parkinglot;
 public class ParkingLot {
 
     public boolean park(Car car) {
+        car.setIsParked(true);
+        return true;
+    }
+
+    public boolean unpark(Car car) {
         return true;
     }
 }

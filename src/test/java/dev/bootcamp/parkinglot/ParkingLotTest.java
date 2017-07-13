@@ -13,7 +13,9 @@ public class ParkingLotTest {
 
     @Before
     public void setup(){
+        ParkingLotOwner owner = new ParkingLotOwner();
         parkingLot = new ParkingLot(2);
+        parkingLot.subscribe(owner);
     }
 
     @Test
@@ -60,5 +62,24 @@ public class ParkingLotTest {
     public void testIsParkingLotFull_whenNotFullyOccupied(){
         parkingLot.park(new Car("KA 01 AA 1234"));
         assertFalse(parkingLot.isParkingFull());
+    }
+
+    @Test
+    public void testNotifyOwner_whenParkingLotIsFull() {
+        parkingLot.park(new Car("KA 01 AA 1234"));
+        parkingLot.park(new Car("TN 01 AA 1234"));
+
+        assertTrue(parkingLot.getOwner().isMyParkinglotFull());
+
+    }
+
+    @Test
+    public void testNotifyOwner_WhenParkingLotIsAvailableAgain () {
+        Car car1 = new Car("KA 01 AA 1234");
+        parkingLot.park(car1);
+        parkingLot.park(new Car("TN 01 AA 1234"));
+        parkingLot.unpark(car1);
+
+        assertFalse(parkingLot.getOwner().isMyParkinglotFull());
     }
 }

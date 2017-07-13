@@ -1,16 +1,31 @@
 package dev.bootcamp.parkinglot;
 
-/**
- * Created by shanmughapriya on 13/07/17.
- */
+import java.util.HashSet;
+import java.util.Set;
+
 public class ParkingLot {
 
+    private final int numberOfSlots;
+    private final Set<Car> parkedCars;
+
+
+    public ParkingLot(int numberOfSlots) {
+        this.numberOfSlots = numberOfSlots;
+        parkedCars = new HashSet<Car>();
+    }
+
     public boolean park(Car car) {
-        car.setIsParked(true);
-        return true;
+        if(isParkingFull()) {
+            return false;
+        }
+        return parkedCars.add(car);
     }
 
     public boolean unpark(Car car) {
-        return true;
+        return parkedCars.remove(car);
+    }
+
+    public boolean isParkingFull() {
+        return numberOfSlots == parkedCars.size();
     }
 }

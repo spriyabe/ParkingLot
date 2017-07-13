@@ -1,12 +1,29 @@
 package dev.bootcamp.parkinglot;
 
-/**
- * Created by shanmughapriya on 13/07/17.
- */
 public class Car {
-    private boolean isParked;
 
-    public void setIsParked(boolean isParked) {
-        this.isParked = isParked;
+    private String regNumber = null;
+
+    public Car(String regNumber) {
+        this.regNumber = regNumber;
+    }
+
+    public String getRegNumber() {
+        return regNumber;
+    }
+
+    @Override
+    public boolean equals(Object car) {
+
+        if(this == car)
+            return true;
+        if (car instanceof Car)
+            return this.getRegNumber().equalsIgnoreCase(((Car) car).getRegNumber());
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getRegNumber().hashCode();
     }
 }
